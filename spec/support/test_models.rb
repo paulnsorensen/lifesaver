@@ -6,7 +6,7 @@ end
 
 
 class Author < ActiveRecord::Base
-  has_many :authorships
+  has_many :authorships, dependent: :destroy
   has_many :posts, through: :authorships
   belongs_to :affiliate
   enqueues_indexing
@@ -55,7 +55,7 @@ end
 
 class Post < ActiveRecord::Base
   has_many :comments
-  has_many :authorships
+  has_many :authorships, dependent: :destroy
   has_many :authors, through: :authorships
   serialize :tags, Array
   enqueues_indexing

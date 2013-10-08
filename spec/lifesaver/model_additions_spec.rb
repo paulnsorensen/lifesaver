@@ -76,4 +76,16 @@ describe Lifesaver::ModelAdditions do
     end
   end
 
+  describe "#dependent_association_map" do
+    it "returns an empty Hash when there are no dependent associations" do
+      expect(Comment.new.send(:dependent_association_map)).to eql({})
+    end
+
+    it "returns a Hash with the keys of dependent_association" do
+      dependent_map = Author.new.send(:dependent_association_map)
+      expect(dependent_map).to eql({authorships: true})
+    end
+
+  end
+
 end

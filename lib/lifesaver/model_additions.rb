@@ -94,16 +94,21 @@ module Lifesaver
       end
     end
 
+    def dependent_association_map
+      dependent = {}
+      self.class.reflect_on_all_associations.each do |assoc|
+        dependent[assoc.name.to_sym] = true if assoc.options[:dependent].present?
+      end
+      dependent
+    end
+
     def update_associations(opts)
       models = []
       if opts[:operation] == :destroy
-        to_be_deleted = {}
-        self.class.reflect_on_all_associations.each do |assoc|
-          to_be_deleted[assoc.name.to_sym] if assoc.options[:dependent].present?
-        end
+        dependent = dependent_association_map
         assoc_models = []
         self.class.notifiable_associations[:on_change].each do |assoc|
-          unless to_be_deleted[assoc]
+          unless dependent[assoc]
             assoc_models |= association_models(assoc)
           end
         end
