@@ -8,7 +8,7 @@ end
 class Author < ActiveRecord::Base
   has_many :authorships
   has_many :posts, through: :authorships
-  has_one :affiliate
+  belongs_to :affiliate
   enqueues_indexing
   include ::Tire::Model::Search
   notifies_for_indexing :authorships

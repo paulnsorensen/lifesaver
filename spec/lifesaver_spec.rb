@@ -50,9 +50,9 @@ describe Lifesaver do
     @affiliates = []
     @affiliates << Affiliate.create(name: "Prosper Forebearer")
     @affiliates << Affiliate.create(name: "Chicago Cubs")
-    @authors[0].affiliate = @affiliates.first
-    @authors[1].affiliate = @affiliates.first
-    @authors[2].affiliate = @affiliates.last
+    @authors[0].affiliate_id = @affiliates.first.id
+    @authors[1].affiliate_id = @affiliates.first.id
+    @authors[2].affiliate_id = @affiliates.last.id
     @authors.each { |a| a.save! }
     Authorship.create(post: @posts[0], author: @authors[0])
     Authorship.create(post: @posts[1], author: @authors[0])
@@ -74,7 +74,7 @@ describe Lifesaver do
     Affiliate.destroy_all
     Comment.destroy_all
   end
-  
+
   it "should traverse the provided graph" do
     models = Lifesaver::IndexGraph.generate([{"class"=>"author", "id"=>1, "status"=>"changed"}])
     expect(models.size).to eql(2)
@@ -92,11 +92,20 @@ describe Lifesaver do
     sleep(1.seconds) # need to wait for elasticsearch to update
     expect(Author.search(query: "Harry Carry").to_a.size).to eql(1)
   end
-  
+
   it "should update distant related indexes" do
     @posts[0].tags << 'werd'
     @posts[0].save!
     sleep(1.seconds)
     expect(Author.search(query: "werd").to_a.size).to eql(1)
-  end  
+  end
+
+  it "should update related indexes if saved model doesn't have index" do
+    @comments[0].text = "We hate this!"
+    @comments[0].save!
+    sleep(1.seconds)
+    result = Post.search(query: "Chicago").to_a.first
+    comment_text = result.comments.first.text
+    expect(comment_text).to eql("We hate this!")
+  end
 end

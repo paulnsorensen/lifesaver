@@ -37,6 +37,7 @@ end
 
 ActiveRecord::Migration.create_table :authors do |t|
   t.string :name
+  t.integer :affiliate_id
   t.timestamps
 end
 
@@ -47,7 +48,6 @@ ActiveRecord::Migration.create_table :authorships do |t|
 end
 
 ActiveRecord::Migration.create_table :affiliates do |t|
-  t.integer :author_id
   t.string :name
   t.timestamps
 end

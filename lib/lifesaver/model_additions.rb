@@ -20,21 +20,30 @@ module Lifesaver
             end
           end
         end
+        notification_callbacks
       end
 
       def enqueues_indexing(options = {})
-        if options[:on]
-        else
-          after_save do
-            send :enqueue_indexing, options.merge(operation: :update)
-            send :update_associations, options.merge(operation: :update)
-          end
-          before_destroy do
-            send :update_associations, options.merge(operation: :destroy)
-          end
-          after_destroy do
-            send :enqueue_indexing, options.merge(operation: :destroy)
-          end
+        indexing_callbacks
+      end
+
+      private
+
+      def notification_callbacks(options={})
+        after_save do
+          send :update_associations, options.merge(operation: :update)
+        end
+        before_destroy do
+          send :update_associations, options.merge(operation: :destroy)
+        end
+      end
+
+      def indexing_callbacks(options={})
+        after_save do
+          send :enqueue_indexing, options.merge(operation: :update)
+        end
+        after_destroy do
+          send :enqueue_indexing, options.merge(operation: :destroy)
         end
       end
     end
@@ -117,6 +126,5 @@ module Lifesaver
     def suppress_indexing?
       Lifesaver.indexing_suppressed? || @indexing_suppressed || false
     end
-
   end
 end

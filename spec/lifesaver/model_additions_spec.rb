@@ -24,9 +24,9 @@ describe Lifesaver::ModelAdditions do
   describe "#association_models" do
     before(:each) do
       @post = Post.create(title: "Some post")
-      @author = Author.create(name: "Some guy")
+      affiliate = Affiliate.create(name: "Some place")
+      @author = Author.create(name: "Some guy", affiliate_id: affiliate.id)
       Authorship.create(post: @post, author: @author)
-      Affiliate.create(author_id: @author.id, name: "Some place")
     end
     after(:all) do
       Post.destroy_all
