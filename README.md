@@ -5,19 +5,13 @@
 [![Coverage Status](https://coveralls.io/repos/paulnsorensen/lifesaver/badge.png)](https://coveralls.io/r/paulnsorensen/lifesaver)
 [![Code Climate](https://codeclimate.com/github/paulnsorensen/lifesaver.png)](https://codeclimate.com/github/paulnsorensen/lifesaver)
 
-Indexes your ActiveRecord models in [elasticsearch](https://github.com/elasticsearch/elasticsearch) asynchronously by making use of [tire](https://github.com/karmi/tire) and [resque](https://github.com/resque/resque) (hence the name: resque + tire = lifesaver). Using lifesaver, you can easily control when or if to reindex your model depending on your context. Lifesaver also provides the ability to traverse
-
-
-----------
-
-
- ActiveRecord associations to trigger the index updates of related models.
+Indexes your ActiveRecord models in [elasticsearch](https://github.com/elasticsearch/elasticsearch) asynchronously by making use of [tire](https://github.com/karmi/tire) and [resque](https://github.com/resque/resque) (hence the name: resque + tire = lifesaver). Using lifesaver, you can easily control when or if to reindex your model depending on your context. Lifesaver also provides the ability to traverse ActiveRecord associations to trigger the index updates of related models.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'lifesaver'
+    gem 'lifesaver', git: "git://github.com/paulnsorensen/lifesaver.git"
 
 And then execute:
 
