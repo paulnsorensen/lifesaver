@@ -8,7 +8,7 @@ class Lifesaver::IndexWorker
       if klass.exists?(id)
         klass.find(id).update_index
       end
-    when :remove
+    when :destroy
       klass.index.remove({type: klass.document_type, id: id})
     end
   end

@@ -26,14 +26,14 @@ module Lifesaver
         if options[:on]
         else
           after_save do
-            send :enqueue_update_index, options
+            send :enqueue_indexing, options.merge(operation: :update)
             send :update_associations, options.merge(operation: :update)
           end
           before_destroy do
             send :update_associations, options.merge(operation: :destroy)
           end
           after_destroy do
-            send :enqueue_remove_index, options
+            send :enqueue_indexing, options.merge(operation: :destroy)
           end
         end
       end
@@ -74,17 +74,15 @@ module Lifesaver
 
     private
 
-    def enqueue_update_index(opts)
+    def enqueue_indexing(opts)
       if has_index? && !suppress_indexing?
-        ::Resque.enqueue(Lifesaver::IndexWorker, self.class.name.underscore.to_sym, self.id, :update)
+        ::Resque.enqueue(
+          Lifesaver::IndexWorker,
+          self.class.name.underscore.to_sym,
+          self.id,
+          opts[:operation]
+        )
       end
-    end
-
-    def enqueue_remove_index(opts)
-      if has_index? && !suppress_indexing?
-        ::Resque.enqueue(Lifesaver::IndexWorker, self.class.name.underscore.to_sym, self.id, :remove)
-      end
-
     end
 
     def update_associations(opts)
