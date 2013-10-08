@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'lifesaver'
 
 require 'support/active_record'
