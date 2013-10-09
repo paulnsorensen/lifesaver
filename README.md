@@ -1,6 +1,7 @@
 # Lifesaver
 
 [![Build Status](https://travis-ci.org/paulnsorensen/lifesaver.png?branch=master)](https://travis-ci.org/paulnsorensen/lifesaver)
+[![Gem Version](https://badge.fury.io/rb/lifesaver.png)](http://badge.fury.io/rb/lifesaver)
 [![Dependency Status](https://gemnasium.com/paulnsorensen/lifesaver.png)](https://gemnasium.com/paulnsorensen/lifesaver)
 [![Coverage Status](https://coveralls.io/repos/paulnsorensen/lifesaver/badge.png)](https://coveralls.io/r/paulnsorensen/lifesaver)
 [![Code Climate](https://codeclimate.com/github/paulnsorensen/lifesaver.png)](https://codeclimate.com/github/paulnsorensen/lifesaver)
