@@ -68,7 +68,7 @@ class Post < ActiveRecord::Base
       untouched: {type: 'string', index: 'not_analyzed'}
     }
   end
-  
+
   def self.search(params)
     tire.search do
       size 100
@@ -78,7 +78,7 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def to_indexed_json
     to_json(include: :comments, authors: { include: :affiliate })
   end

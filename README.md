@@ -25,16 +25,19 @@ Or install it yourself as:
 
 Replaces the tire callbacks in your models
 
+```ruby
     class Article < ActiveRecord::Base
       include Tire::Model::Search
       # Replace the following include with Lifesaver
       # include Tire::Model::Callbacks
       enqueues_indexing
     end
+```
 
 #### Configurable Behavior
 You can decided when or if the index gets updated at all based on your current situation. Lifesaver exposes two methods (`supress_indexing`, `unsuppress_indexing`) that set a model's indexing behavior until that model is saved.
 
+```ruby
     class ArticlesController < ApplicationController
       def suppressed_update
         @article = Article.find(params[:id])
@@ -51,10 +54,12 @@ You can decided when or if the index gets updated at all based on your current s
         @article.unsuppress_indexing
       end
     end
+```
 
 #### ActiveRecord Association Traversal
 Lifesaver can trigger other models to reindex if you have nested models in your indexes that you would like to update. Use the `notifies_for_indexing` method to indicate which related models should be marked for indexing. Any associations passed will be both updated when a model is changed (`save` or `destroy`) and when another model notifies it. Any associations passed in the options will only notify when the model is changed or notified when specified in the `only_on_change` or `only_on_notify` keys, respectively.
 
+```ruby
     class Article < ActiveRecord::Base
       belongs_to :author
       belongs_to :category
@@ -65,6 +70,7 @@ Lifesaver can trigger other models to reindex if you have nested models in your 
         only_on_change: :category,
         only_on_notify: [:watchers, :moderator]
     end
+```
 
 ## Integration with Resque
 You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
@@ -81,8 +87,7 @@ You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
 + specify which fields will trigger indexing changes
 + configuration options
 + bulk indexing
-+ refactor marshalling
 + resque-scheduler to provide `delay_indexing` and `enqueues_indexing after: 30.minutes, on: :save`
 + unsuppress indexing after save
 + sidekiq support
-+ Prepare for new elasticsearch library
++ prepare for new elasticsearch library

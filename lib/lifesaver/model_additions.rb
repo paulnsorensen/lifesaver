@@ -108,17 +108,15 @@ module Lifesaver
         dependent = dependent_association_map
         assoc_models = []
         self.class.notifiable_associations[:on_change].each do |assoc|
-          unless dependent[assoc]
-            assoc_models |= association_models(assoc)
-          end
+          assoc_models |= association_models(assoc) unless dependent[assoc]
         end
         assoc_models.each do |m|
-          models << {class: m.class.name.underscore.to_sym, id: m.id, status: :notified}
+          models << Lifesaver::Marshal.dump(m, {status: :notified})
         end
       elsif opts[:operation] == :update
-        models << {class: self.class.name.underscore.to_sym, id: self.id, status: :changed}
+        models << Lifesaver::Marshal.dump(self, {status: :changed})
       end
-      # Since enqueue expects a splat of arguments, we need to put our array into an array
+
       ::Resque.enqueue(Lifesaver::VisitorWorker, models) unless models.empty?
     end
 

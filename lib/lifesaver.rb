@@ -1,5 +1,6 @@
 require 'resque-loner'
 require "lifesaver/version"
+require "lifesaver/marshal"
 require "lifesaver/index_graph"
 require "lifesaver/model_additions"
 require "lifesaver/index_worker"

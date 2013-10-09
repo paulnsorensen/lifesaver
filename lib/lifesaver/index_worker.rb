@@ -5,9 +5,7 @@ class Lifesaver::IndexWorker
     klass = class_name.to_s.classify.constantize
     case action.to_sym
     when :update
-      if klass.exists?(id)
-        klass.find(id).update_index
-      end
+      klass.find(id).update_index if klass.exists?(id)
     when :destroy
       klass.index.remove({type: klass.document_type, id: id})
     end

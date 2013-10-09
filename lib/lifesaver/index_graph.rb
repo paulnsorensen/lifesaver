@@ -1,18 +1,15 @@
 module Lifesaver
   class IndexGraph
-    def self.generate(models, verbose=false)
+    def self.generate(marshalled_models)
       models_to_index = []
       visited_models = {}
       graph = []
-      models.each do |m|
-        m.symbolize_keys!
-        klass = m[:class].to_s.classify.constantize
-        status = m[:status].to_sym
-        if klass.exists?(m[:id])
-          mdl = klass.find(m[:id])
-          if status == :notified
+      marshalled_models.each do |m|
+        mdl, opts = Lifesaver::Marshal.load(m)
+        if mdl
+          if opts[:status] == :notified
             graph << mdl
-          else # status == :changed
+          elsif opts[:status] == :changed
             visited_models[self.visited_model_key(mdl)] = true
             graph |= self.notified_models(mdl, true)
           end
@@ -42,9 +39,8 @@ module Lifesaver
      end
 
      def self.notified_models(mdl, on_change = false)
-       if mdl.is_a?(Hash)
-         klass = mdl[:class].to_s.classify.constantize
-         mdl = klass.find(mdl[:id]) if klass.exists?(mdl[:id])
+       if Lifesaver::Marshal.is_serialized?(mdl)
+         mdl, opts = Lifesaver::Marshal.load(mdl)
        end
        models = []
        key = on_change ? :on_change : :on_notify
