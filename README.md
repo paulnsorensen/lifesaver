@@ -12,7 +12,7 @@ Indexes your ActiveRecord models in [elasticsearch](https://github.com/elasticse
 
 Add this line to your application's Gemfile:
 
-    gem 'lifesaver', git: "git://github.com/paulnsorensen/lifesaver.git"
+    gem 'lifesaver'
 
 And then execute:
 
