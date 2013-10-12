@@ -1,53 +1,71 @@
 module Lifesaver
   class IndexGraph
-    def self.generate(marshalled_models)
-      models_to_index = []
-      visited_models = {}
-      graph = []
+
+    def initialize(marshalled_models=[])
+      @stack = []
+      @visited_models = {}
+      @models_to_index = []
+
       marshalled_models.each do |m|
-        mdl, opts = Lifesaver::Marshal.load(m)
-        if mdl
+        model, opts = Lifesaver::Marshal.load(m)
+        if model
           if opts[:status] == :notified
-            graph << mdl
+            add_model(model)
           elsif opts[:status] == :changed
-            visited_models[self.visited_model_key(mdl)] = true
-            graph |= self.notified_models(mdl, true)
+            visit_model(model)
+            add_unvisited_models(model, :on_change)
           end
         end
       end
-      graph.each {|m| visited_models[self.visited_model_key(m)] = true }
-      while !graph.empty?
-        mdl = graph.shift
-        models_to_index << mdl if mdl.has_index?
-        self.notified_models(mdl).each do |m|
-          unless visited_models[self.visited_model_key(m)]
-            visited_models[self.visited_model_key(m)] = true
-            graph << m
-          end
-        end
+    end
+
+    def generate
+      while model = @stack.shift
+        @models_to_index << model if model.has_index?
+        add_unvisited_models(model, :on_notify)
       end
-      models_to_index
-     end
+      @models_to_index
+    end
 
-     def self.visited_model_key(mdl)
-       if mdl.is_a?(Hash)
-         klass = mdl[:class].to_s.classify
-         "#{klass}_#{mdl[:id]}"
-       elsif mdl.try(:id)
-         "#{mdl.class.name}_#{mdl.id}"
-       end
-     end
+    private
 
-     def self.notified_models(mdl, on_change = false)
-       if Lifesaver::Marshal.is_serialized?(mdl)
-         mdl, opts = Lifesaver::Marshal.load(mdl)
-       end
-       models = []
-       key = on_change ? :on_change : :on_notify
-       mdl.class.notifiable_associations[key].each do |assoc|
-         models |= mdl.association_models(assoc)
-       end
-       models
-     end
+    def add_model(model)
+      visit_model(model)
+      @stack << model
+    end
+
+    def visit_model(model)
+      @visited_models[visited_model_key(model)] = true
+    end
+
+    def model_visited?(model)
+      @visited_models[visited_model_key(model)] || false
+    end
+
+    def add_unvisited_models(model, key)
+      models = notified_models(model, key)
+      models.each { |m| add_model(m) unless model_visited?(m) }
+    end
+
+    def visited_model_key(mdl)
+      if mdl.is_a?(Hash)
+        klass = mdl[:class].to_s.classify
+        "#{klass}_#{mdl[:id]}"
+      elsif mdl.try(:id)
+        "#{mdl.class.name}_#{mdl.id}"
+      end
+    end
+
+    def notified_models(mdl, key)
+      if Lifesaver::Marshal.is_serialized?(mdl)
+        mdl, opts = Lifesaver::Marshal.load(mdl)
+      end
+      models = []
+      # key = on_change ? :on_change : :on_notify
+      mdl.class.notifiable_associations[key].each do |assoc|
+        models |= mdl.association_models(assoc)
+      end
+      models
+    end
   end
 end
