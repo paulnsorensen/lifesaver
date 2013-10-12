@@ -61,11 +61,11 @@ module Lifesaver
         mdl, opts = Lifesaver::Marshal.load(mdl)
       end
       models = []
-      # key = on_change ? :on_change : :on_notify
       mdl.class.notifiable_associations[key].each do |assoc|
         models |= mdl.association_models(assoc)
       end
       models
     end
+
   end
 end
