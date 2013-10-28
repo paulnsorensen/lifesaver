@@ -1,6 +1,8 @@
 class Lifesaver::IndexWorker
   include ::Resque::Plugins::UniqueJob
-  @queue = :lifesaver_indexing
+
+  def self.queue; ::Lifesaver.config.indexing_queue end
+
   def self.perform(class_name, id, action)
     klass = class_name.to_s.classify.constantize
     case action.to_sym
