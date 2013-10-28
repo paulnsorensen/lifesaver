@@ -2,7 +2,7 @@ module Lifesaver
   class IndexGraph
 
     def initialize(marshalled_models=[])
-      @stack = []
+      @queue = []
       @visited_models = {}
       @models_to_index = []
 
@@ -20,7 +20,7 @@ module Lifesaver
     end
 
     def generate
-      while model = @stack.shift
+      while model = @queue.shift
         @models_to_index << model if model.has_index?
         add_unvisited_models(model, :on_notify)
       end
@@ -31,7 +31,7 @@ module Lifesaver
 
     def add_model(model)
       visit_model(model)
-      @stack << model
+      @queue << model
     end
 
     def visit_model(model)

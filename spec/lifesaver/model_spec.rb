@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Lifesaver::ModelAdditions do
+describe Lifesaver::Model do
   Lifesaver.suppress_indexing
 
   describe ".notifies_for_indexing" do

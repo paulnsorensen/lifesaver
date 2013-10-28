@@ -1,7 +1,8 @@
 require 'tire'
 
 ActiveSupport.on_load :active_record do
-  include Lifesaver::ModelAdditions
+  include Lifesaver::Model::IndexingQueuing
+  include Lifesaver::Model::IndexingNotification
 end
 
 

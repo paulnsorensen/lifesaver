@@ -78,6 +78,7 @@ describe Lifesaver do
   it "should traverse the provided graph" do
     input = [{"class"=>"author", "id"=>1, "status"=>"changed"}]
     models = Lifesaver::IndexGraph.new(input).generate
+    # output = 
     expect(models.size).to eql(2)
   end
 
