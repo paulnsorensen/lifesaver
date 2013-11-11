@@ -8,7 +8,7 @@ module Lifesaver
 
         private
 
-        def indexing_callbacks(options={})
+        def indexing_callbacks(options = {})
           # after_commit?
           after_save do
             send :enqueue_indexing, options.merge(operation: :update)
@@ -42,7 +42,7 @@ module Lifesaver
           ::Resque.enqueue(
             Lifesaver::IndexWorker,
             self.class.name.underscore.to_sym,
-            self.id,
+            id,
             opts[:operation]
           )
         end

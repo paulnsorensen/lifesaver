@@ -3,11 +3,11 @@ module Lifesaver
     class NotifiableAssociations
       class AssociationKeys < Struct.new(:on_change, :on_notify); end
 
-      def initialize()
+      def initialize
         @association_keys = AssociationKeys.new([], [])
       end
 
-      def populate(associations, options=nil)
+      def populate(associations, options = nil)
         options ||= {}
         add_associations(:on_change, associations)
         add_associations(:on_notify, associations)

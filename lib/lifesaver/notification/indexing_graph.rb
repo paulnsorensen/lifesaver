@@ -12,8 +12,8 @@ module Lifesaver
 
         serialized_models.each do |model_hash|
           model = Lifesaver::SerializedModel.new
-          model.class_name = model_hash["class_name"]
-          model.id = model_hash["id"]
+          model.class_name = model_hash['class_name']
+          model.id = model_hash['id']
           add_model_to_loader(model.class_name, model.id)
         end
       end

@@ -8,7 +8,7 @@ require 'support/active_record'
 require 'support/test_models'
 
 Resque.inline = true
-Tire::Model::Search.index_prefix "lifesaver_test"
+Tire::Model::Search.index_prefix 'lifesaver_test'
 
 Model = Struct.new(:id)
 
@@ -20,7 +20,7 @@ RSpec.configure do |config|
   config.around do |example|
     ActiveRecord::Base.transaction do
       example.run
-      raise ActiveRecord::Rollback
+      fail ActiveRecord::Rollback
     end
   end
 end

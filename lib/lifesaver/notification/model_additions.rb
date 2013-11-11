@@ -5,12 +5,12 @@ module Lifesaver
         def notifies_for_indexing(*args)
           self.notifiable_associations = NotifiableAssociations.new
           options = args.last.is_a?(Hash) ? args.pop : {}
-          self.notifiable_associations.populate(args, options)
+          notifiable_associations.populate(args, options)
           notification_callbacks
         end
 
         def load_with_notifiable_associations(ids)
-          self.includes(self.notifiable_associations.on_notify).where(id: ids)
+          includes(notifiable_associations.on_notify).where(id: ids)
         end
 
         private

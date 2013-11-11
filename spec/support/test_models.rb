@@ -24,8 +24,8 @@ class Author < ActiveRecord::Base
   mapping do
     indexes :id, type: 'integer', index: 'not_analyzed'
     indexes :name, type: 'multi_field', fields: {
-      name: {type: 'string', analyzer: 'snowball'},
-      untouched: {type: 'string', index: 'not_analyzed'}
+      name: { type: 'string', analyzer: 'snowball' },
+      untouched: { type: 'string', index: 'not_analyzed' }
     }
     indexes :post_tags, analyzer: 'keyword'
   end
@@ -66,8 +66,8 @@ class Post < ActiveRecord::Base
   mapping do
     indexes :id, type: 'integer', index: 'not_analyzed'
     indexes :title, type: 'multi_field', fields: {
-      title: {type: 'string', analyzer: 'snowball'},
-      untouched: {type: 'string', index: 'not_analyzed'}
+      title: { type: 'string', analyzer: 'snowball' },
+      untouched: { type: 'string', index: 'not_analyzed' }
     }
   end
 

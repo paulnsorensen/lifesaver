@@ -43,7 +43,7 @@ describe Lifesaver::Notification::NotifiableAssociations do
 
     it 'is false if the :on_notify array is empty' do
       notifiable_associations.populate([], only_on_change: [:baz])
-      expect(notifiable_associations.any_to_notify?).to be_false      
+      expect(notifiable_associations.any_to_notify?).to be_false
     end
   end
 
