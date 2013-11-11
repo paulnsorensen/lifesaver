@@ -1,8 +1,8 @@
 require 'tire'
 
 ActiveSupport.on_load :active_record do
-  include Lifesaver::Model::IndexingQueuing
-  include Lifesaver::Model::IndexingNotification
+  include Lifesaver::Indexing::ModelAdditions
+  include Lifesaver::Notification::ModelAdditions
 end
 
 
@@ -12,6 +12,7 @@ class Author < ActiveRecord::Base
   belongs_to :affiliate
   enqueues_indexing
   include ::Tire::Model::Search
+
   notifies_for_indexing :authorships
   def post_tags
     tags = Set.new

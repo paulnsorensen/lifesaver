@@ -1,13 +1,16 @@
 require 'resque-loner'
-require "lifesaver/version"
-require "lifesaver/config"
-require "lifesaver/marshal"
-require "lifesaver/index_graph"
-require "lifesaver/model/indexing_queuing"
-require "lifesaver/model/indexing_notification"
-require "lifesaver/index_worker"
-require "lifesaver/visitor_worker"
-require "lifesaver/railtie" if defined? Rails
+require 'lifesaver/version'
+require 'lifesaver/config'
+require 'lifesaver/serialized_model'
+require 'lifesaver/indexing/model_additions'
+require 'lifesaver/notification/notifiable_associations'
+require 'lifesaver/notification/model_additions'
+require 'lifesaver/notification/eager_loader'
+require 'lifesaver/notification/traversal_queue'
+require 'lifesaver/notification/indexing_graph'
+require 'lifesaver/index_worker'
+require 'lifesaver/visitor_worker'
+require 'lifesaver/railtie' if defined? Rails
 
 module Lifesaver
   extend self

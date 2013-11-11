@@ -59,6 +59,9 @@ describe Lifesaver do
     Authorship.create(post: @posts[1], author: @authors[1])
     Authorship.create(post: @posts[2], author: @authors[2])
 
+    @authors.each { |a| a.reload }
+    @posts.each { |p| p.reload }
+
     Lifesaver.unsuppress_indexing
 
     [Author, Post].each do |klass|
@@ -76,10 +79,12 @@ describe Lifesaver do
   end
 
   it "should traverse the provided graph" do
-    input = [{"class"=>"author", "id"=>1, "status"=>"changed"}]
-    models = Lifesaver::IndexGraph.new(input).generate
-    # output = 
-    expect(models.size).to eql(2)
+    input = [{"class_name" => "Author", "id" => 1}]
+    indexing_graph = Lifesaver::Notification::IndexingGraph.new
+    indexing_graph.initialize_models(input)
+    models = indexing_graph.generate
+    output = [ @authors[0], @posts[0], @posts[1] ]
+    expect(models).to eql(output)
   end
 
   it "should reindex on destroy" do
