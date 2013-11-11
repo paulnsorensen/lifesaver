@@ -5,3 +5,5 @@ rvm:
 services:
   - redis-server
   - elasticsearch
+env:
+  - RUN_COVERALLS=true

@@ -1,8 +1,8 @@
 require 'tire'
 
 ActiveSupport.on_load :active_record do
-  include Lifesaver::Model::IndexingQueuing
-  include Lifesaver::Model::IndexingNotification
+  include Lifesaver::Indexing::ModelAdditions
+  include Lifesaver::Notification::ModelAdditions
 end
 
 
@@ -12,6 +12,7 @@ class Author < ActiveRecord::Base
   belongs_to :affiliate
   enqueues_indexing
   include ::Tire::Model::Search
+
   notifies_for_indexing :authorships
   def post_tags
     tags = Set.new
@@ -23,8 +24,8 @@ class Author < ActiveRecord::Base
   mapping do
     indexes :id, type: 'integer', index: 'not_analyzed'
     indexes :name, type: 'multi_field', fields: {
-      name: {type: 'string', analyzer: 'snowball'},
-      untouched: {type: 'string', index: 'not_analyzed'}
+      name: { type: 'string', analyzer: 'snowball' },
+      untouched: { type: 'string', index: 'not_analyzed' }
     }
     indexes :post_tags, analyzer: 'keyword'
   end
@@ -65,8 +66,8 @@ class Post < ActiveRecord::Base
   mapping do
     indexes :id, type: 'integer', index: 'not_analyzed'
     indexes :title, type: 'multi_field', fields: {
-      title: {type: 'string', analyzer: 'snowball'},
-      untouched: {type: 'string', index: 'not_analyzed'}
+      title: { type: 'string', analyzer: 'snowball' },
+      untouched: { type: 'string', index: 'not_analyzed' }
     }
   end
 
