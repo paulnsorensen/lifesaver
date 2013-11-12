@@ -7,10 +7,7 @@ class Lifesaver::VisitorWorker
     indexing_graph = Lifesaver::Notification::IndexingGraph.new
     indexing_graph.initialize_models(models)
     indexing_graph.generate.each do |m|
-      ::Resque.enqueue(Lifesaver::IndexWorker,
-                        m.class.name.underscore.to_sym,
-                        m.id,
-                        :update) if m.has_index?
+      Lifesaver::Indexing::Enqueuer.new(model: m, operation: :update).enqueue
     end
   end
 end
