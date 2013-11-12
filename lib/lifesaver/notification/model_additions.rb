@@ -44,19 +44,19 @@ module Lifesaver
       end
 
       def models_for_association(assoc)
-         models = []
-         association = send(assoc)
-         unless association.nil?
-           if association.respond_to?(:each)
-             association.each do |m|
-               models << m
-             end
-           else
-             models << association
-           end
-         end
-         models
-       end
+        models = []
+        association = send(assoc)
+        unless association.nil?
+          if association.respond_to?(:each)
+            association.each do |m|
+              models << m
+            end
+          else
+            models << association
+          end
+        end
+        models
+      end
 
       private
 

@@ -27,6 +27,10 @@ module Lifesaver
         self.respond_to?(:tire)
       end
 
+      def should_index?
+        has_index? && !suppress_indexing?
+      end
+
       def suppress_indexing
         @indexing_suppressed = true
       end
@@ -37,15 +41,9 @@ module Lifesaver
 
       private
 
-      def enqueue_indexing(opts)
-        if has_index? && !suppress_indexing?
-          ::Resque.enqueue(
-            Lifesaver::IndexWorker,
-            self.class.name.underscore.to_sym,
-            id,
-            opts[:operation]
-          )
-        end
+      def enqueue_indexing(options)
+        Lifesaver::Indexing::Enqueuer.new(model: self,
+                                          operation: options[:operation]).enqueue
       end
 
       def suppress_indexing?
