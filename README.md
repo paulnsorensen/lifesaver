@@ -92,3 +92,6 @@ You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
 + unsuppress indexing after save
 + sidekiq support
 + prepare for new elasticsearch library
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paulnsorensen/lifesaver/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
