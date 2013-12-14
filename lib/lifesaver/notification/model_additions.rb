@@ -96,7 +96,7 @@ module Lifesaver
       end
 
       def enqueue_worker(serialized_models)
-        ::Resque.enqueue(Lifesaver::VisitorWorker, serialized_models) unless serialized_models.empty?
+        Lifesaver::Notification::Enqueuer.new(serialized_models).enqueue
       end
 
     end
