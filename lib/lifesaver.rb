@@ -9,6 +9,7 @@ require 'lifesaver/notification/model_additions'
 require 'lifesaver/notification/eager_loader'
 require 'lifesaver/notification/traversal_queue'
 require 'lifesaver/notification/indexing_graph'
+require 'lifesaver/notification/enqueuer'
 require 'lifesaver/index_worker'
 require 'lifesaver/visitor_worker'
 require 'lifesaver/railtie' if defined? Rails
