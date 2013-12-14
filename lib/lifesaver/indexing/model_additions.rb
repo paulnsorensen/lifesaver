@@ -42,8 +42,9 @@ module Lifesaver
       private
 
       def enqueue_indexing(options)
+        operation = options[:operation]
         Lifesaver::Indexing::Enqueuer.new(model: self,
-                                          operation: options[:operation]).enqueue
+                                          operation: operation).enqueue
       end
 
       def suppress_indexing?
