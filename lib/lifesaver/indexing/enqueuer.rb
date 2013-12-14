@@ -8,12 +8,18 @@ module Lifesaver
 
       def enqueue
         if should_enqueue?(model)
-          ::Resque.enqueue(Lifesaver::IndexWorker, class_name, id, operation)
+          ::Resque.enqueue(
+                           Lifesaver::IndexWorker,
+                           class_name,
+                           model_id,
+                           operation
+                          )
         end
       end
 
       private
-      attr_accessor :model, :operation
+
+      attr_reader :model, :operation
 
       def should_enqueue?(model)
         model.should_index?
@@ -23,7 +29,7 @@ module Lifesaver
         model.class.name.underscore.to_sym
       end
 
-      def id
+      def model_id
         model.id
       end
     end
