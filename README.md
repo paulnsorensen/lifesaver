@@ -85,6 +85,8 @@ You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
 5. Create new Pull Request
 
 ## TODO
++ will not run callbacks # It will also execute any `<after|before>_update_elasticsearch_index` callback hooks.
++ percolation?
 + specify which fields will trigger indexing changes
 + configuration options
 + bulk indexing
@@ -92,3 +94,6 @@ You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
 + unsuppress indexing after save
 + sidekiq support
 + prepare for new elasticsearch library
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paulnsorensen/lifesaver/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
