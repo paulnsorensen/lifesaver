@@ -24,6 +24,7 @@ describe Lifesaver::Indexing::Indexer do
                                                    )
 
         expect(index).to receive(:store).with(model)
+
         indexer.perform
       end
     end
@@ -42,6 +43,7 @@ describe Lifesaver::Indexing::Indexer do
         correct_arguments = { type: 'class', id: '1' }
 
         expect(index).to receive(:remove).with(correct_arguments)
+
         indexer.perform
       end
     end

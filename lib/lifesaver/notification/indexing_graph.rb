@@ -5,7 +5,6 @@ module Lifesaver
         @queue = Lifesaver::Notification::TraversalQueue.new
         @loader = Lifesaver::Notification::EagerLoader.new
         @models_to_index = []
-        @done = false
       end
 
       def initialize_models(serialized_models)
@@ -35,7 +34,7 @@ module Lifesaver
 
       private
 
-      attr_accessor :queue, :loader, :models_to_index, :done
+      attr_accessor :queue, :loader, :models_to_index
 
       def loader_full?
         !loader.empty?

@@ -7,12 +7,14 @@ describe Lifesaver::Notification::TraversalQueue do
   describe '#push' do
     it 'adds an univisited model' do
       traversal_queue.push(model)
+
       expect(traversal_queue.size).to eql(1)
     end
 
     it 'ignores a visited model' do
       traversal_queue.push(model)
       traversal_queue.push(model)
+
       expect(traversal_queue.size).to eql(1)
     end
   end
@@ -20,12 +22,14 @@ describe Lifesaver::Notification::TraversalQueue do
   describe '#<<' do
     it 'adds an univisited model' do
       traversal_queue << model
+
       expect(traversal_queue.size).to eql(1)
     end
 
     it 'ignores a visited model' do
       traversal_queue << model
       traversal_queue << model
+
       expect(traversal_queue.size).to eql(1)
     end
   end
@@ -36,6 +40,7 @@ describe Lifesaver::Notification::TraversalQueue do
         another_model = Model.new(3)
         traversal_queue << model
         traversal_queue << another_model
+
         expect(traversal_queue.pop).to eql(model)
       end
     end
@@ -54,6 +59,7 @@ describe Lifesaver::Notification::TraversalQueue do
 
     it 'is not true when not empty' do
       traversal_queue << model
+
       expect(traversal_queue.empty?).to be_false
     end
   end

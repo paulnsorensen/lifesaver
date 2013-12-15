@@ -9,6 +9,7 @@ describe Lifesaver::Notification::EagerLoader do
     it 'adds when empty' do
       eager_loader.add_model('Post', 34)
       expected_result = { 'Post' => [34] }
+
       expect(eager_loader.send(:models_to_load)).to eql(expected_result)
     end
 
@@ -17,6 +18,7 @@ describe Lifesaver::Notification::EagerLoader do
       eager_loader.add_model('Post', 38)
       eager_loader.add_model('Article', 3)
       expected_result = { 'Post' => [34, 38], 'Article' => [3] }
+
       expect(eager_loader.send(:models_to_load)).to eql(expected_result)
     end
 
@@ -24,6 +26,7 @@ describe Lifesaver::Notification::EagerLoader do
       eager_loader.add_model('Post', 38)
       eager_loader.add_model('Post', 38)
       expected_result = { 'Post' => [38] }
+
       expect(eager_loader.send(:models_to_load)).to eql(expected_result)
     end
 
@@ -38,6 +41,7 @@ describe Lifesaver::Notification::EagerLoader do
 
     it 'empties the models_to_load' do
       eager_loader.load
+
       expect(eager_loader.send(:models_to_load)).to be_empty
     end
 
@@ -53,6 +57,7 @@ describe Lifesaver::Notification::EagerLoader do
 
     it 'is false when not empty' do
       eager_loader.add_model('Post', 38)
+
       expect(eager_loader.empty?).to be_false
     end
   end
