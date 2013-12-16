@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/paulnsorensen/lifesaver/badge.png)](https://coveralls.io/r/paulnsorensen/lifesaver)
 [![Code Climate](https://codeclimate.com/github/paulnsorensen/lifesaver.png)](https://codeclimate.com/github/paulnsorensen/lifesaver)
 
-Indexes your ActiveRecord models in [elasticsearch](https://github.com/elasticsearch/elasticsearch) asynchronously by making use of [tire](https://github.com/karmi/tire) and [resque](https://github.com/resque/resque) (hence the name: resque + tire = lifesaver). Using lifesaver, you can easily control when or if to reindex your model depending on your context. Lifesaver also provides the ability to traverse ActiveRecord associations to trigger the index updates of related models.
+Asynchronously sends your ActiveRecord models for reindexing in [elasticsearch](https://github.com/elasticsearch/elasticsearch) by making use of [tire](https://github.com/karmi/tire) and [resque](https://github.com/resque/resque) (hence the name: resque + tire = lifesaver). Lifesaver also provides the ability to traverse ActiveRecord associations to trigger the index updates of related models.
 
 ## Installation
 
@@ -35,8 +35,8 @@ Replaces the tire callbacks in your models
     end
 ```
 
-#### Configurable Behavior
-You can decided when or if the index gets updated at all based on your current situation. Lifesaver exposes two methods (`supress_indexing`, `unsuppress_indexing`) that set a model's indexing behavior until that model is saved.
+#### Configuring Indexing Behavior
+You can suppress index updates on a per-model basis or globally using `Lifesaver.suppress_indexing` (to turn suppression back off, you would use `Lifesaver.unsuppress_indexing`). Lifesaver exposes two instance methods on the model level (`supress_indexing`, `unsuppress_indexing`) that set a model's indexing behavior for life of that instance.
 
 ```ruby
     class ArticlesController < ApplicationController
@@ -48,7 +48,7 @@ You can decided when or if the index gets updated at all based on your current s
         @article.suppress_indexing
 
         @article.save!
-        
+
         # Not neccessary but if saved
         # after this following call,
         # this article would reindex
@@ -73,8 +73,30 @@ Lifesaver can trigger other models to reindex if you have nested models in your 
     end
 ```
 
+## Integration with Tire
+Lifesaver will not execute any `<after|before>_update_elasticsearch_index` callback hooks. Lifesaver also does not currently support percolation.
+
 ## Integration with Resque
-You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
+You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`. The queue names are configurable.
+
+## Testing
+
+In your spec_helper, you should place something similar to the following to make sure Lifesaver isn't spawning up indexing jobs unless you want it to.
+
+```ruby
+    config.before(:each) do
+      Lifesaver.suppress_indexing
+    end
+```
+
+Then, when your tests need Lifesaver to run, you should make sure you unsuppress indexing in a `before` block. You may also want to run [Resque inline](http://robots.thoughtbot.com/process-jobs-inline-when-running-acceptance-tests).
+
+```ruby
+  describe 'some test' do
+    before { Lifesaver.unsuppress_indexing }
+    # tests go here
+  end
+```
 
 ## Contributing
 
@@ -85,15 +107,7 @@ You will see two new queues: `lifesaver_indexing` and `lifesaver_notification`
 5. Create new Pull Request
 
 ## TODO
-+ will not run callbacks # It will also execute any `<after|before>_update_elasticsearch_index` callback hooks.
-+ percolation?
-+ specify which fields will trigger indexing changes
-+ configuration options
-+ bulk indexing
-+ resque-scheduler to provide `delay_indexing` and `enqueues_indexing after: 30.minutes, on: :save`
-+ unsuppress indexing after save
-+ sidekiq support
-+ prepare for new elasticsearch library
+Please visit TODO page [here](https://github.com/paulnsorensen/lifesaver/wiki/TODO)
+
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/paulnsorensen/lifesaver/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
