@@ -34,7 +34,7 @@ describe Lifesaver::Notification::EagerLoader do
 
   describe '#load' do
     before do
-      Post.stub(:load_with_notifiable_associations).and_return([])
+      allow(Post).to receive(:load_with_notifiable_associations).and_return([])
       eager_loader.add_model('Post', 34)
       eager_loader.add_model('Post', 38)
     end
