@@ -5,15 +5,15 @@ describe Lifesaver::Indexing::Indexer do
     let(:index) { double('index', remove: nil, store: nil) }
     let(:index_name) { 'test-index-name' }
     before do
-      Model.stub(:index_name).and_return(index_name)
-      Tire.stub(:index).with(index_name).and_return(index)
+      allow(Model).to receive(:index_name).and_return(index_name)
+      allow(Tire).to receive(:index).with(index_name).and_return(index)
     end
 
     context 'when operation is update' do
       let(:model) { Model.new(1) }
       before do
-        Model.stub(:exists?).with('1').and_return(true)
-        Model.stub(:find).with('1').and_return(model)
+        allow(Model).to receive(:exists?).with('1').and_return(true)
+        allow(Model).to receive(:find).with('1').and_return(model)
       end
 
       it 'calls tire with the correct arguments' do
@@ -31,7 +31,7 @@ describe Lifesaver::Indexing::Indexer do
 
     context 'when operation is destroy' do
       before do
-        Model.stub(:document_type).and_return('class')
+        allow(Model).to receive(:document_type).and_return('class')
       end
 
       it 'calls tire with the correct arguments' do

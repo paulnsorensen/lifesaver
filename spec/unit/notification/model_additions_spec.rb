@@ -13,7 +13,7 @@ describe Lifesaver::Notification::ModelAdditions do
 
   describe '.notifies_for_indexing' do
     before do
-      post.stub(:update_associations)
+      allow(post).to receive(:update_associations)
     end
 
     it 'calls update_associations on save' do

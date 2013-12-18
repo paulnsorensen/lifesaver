@@ -5,7 +5,7 @@ describe Lifesaver::Indexing::ModelAdditions do
 
   describe '.enqueues_indexing' do
     before do
-      post.stub(:enqueue_indexing)
+      allow(post).to receive(:enqueue_indexing)
     end
 
     it 'calls enqueue_indexing on save' do

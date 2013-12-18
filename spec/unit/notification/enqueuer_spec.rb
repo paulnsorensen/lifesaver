@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Lifesaver::Notification::Enqueuer do
   let(:models) { [Lifesaver::SerializedModel.new('TestClass', '3')] }
   let(:enqueuer) { Lifesaver::Notification::Enqueuer.new(models) }
-  before { ::Resque.stub(:enqueue) }
+  before { allow(Resque).to receive(:enqueue) }
 
   describe '#enqueue' do
     context 'when indexing is not suppressed' do
