@@ -2,9 +2,9 @@ module Lifesaver
   module Indexing
     class Indexer
       def initialize(args)
-        @class_name = args[:class_name]
-        @model_id = args[:model_id]
-        @operation = args[:operation].to_sym
+        @class_name = args.fetch(:class_name)
+        @model_id = args.fetch(:model_id)
+        @operation = args.fetch(:operation).to_sym
       end
 
       def perform
