@@ -2,8 +2,8 @@ module Lifesaver
   module Indexing
     class Enqueuer
       def initialize(args)
-        @model = args[:model]
-        @operation = args[:operation]
+        @model = args.fetch(:model)
+        @operation = args.fetch(:operation)
       end
 
       def enqueue
