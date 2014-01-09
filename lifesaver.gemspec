@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Lifesaver::VERSION
   spec.authors       = ["Paul Sorensen"]
   spec.email         = ["paulnsorensen@gmail.com"]
-  spec.description   = %q{Indexes your ActiveRecord models in elasticsearch asynchronously by making use of tire and resque}
-  spec.summary       = %q{Indexes your ActiveRecord models in elasticsearch asynchronously by making use of tire and resque}
+  spec.description   = %q{Asynchronously sends your ActiveRecord models for reindexing in elasticsearch by making use of tire and resque}
+  spec.summary       = %q{Asynchronously sends your ActiveRecord models for reindexing in elasticsearch by making use of tire and resque}
   spec.homepage      = ""
   spec.license       = "MIT"
 
