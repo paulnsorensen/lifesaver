@@ -1,6 +1,9 @@
 require 'pry'
-require 'coveralls'
-Coveralls.wear! if ENV['RUN_COVERALLS']
+
+if RUBY_ENGINE != 'rbx'
+  require 'coveralls'
+  Coveralls.wear! if ENV['RUN_COVERALLS']
+end
 
 require 'lifesaver'
 

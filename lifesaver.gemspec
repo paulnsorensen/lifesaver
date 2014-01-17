@@ -28,4 +28,10 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'tire', '~> 0.6.0'
   spec.add_runtime_dependency 'resque', '~> 1.25.0'
   spec.add_runtime_dependency 'resque-loner', '~> 1.2.1'
+
+  if RUBY_ENGINE == 'rbx'
+    spec.add_development_dependency 'racc'
+    spec.add_development_dependency 'rubysl', '~> 2.0'
+    spec.add_development_dependency 'json'
+  end
 end
