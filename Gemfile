@@ -11,8 +11,3 @@ group :development, :test do
   gem 'pry', require: false
 end
 
-platforms :rbx do
-  gem 'racc'
-  gem 'rubysl', '~> 2.0'
-  gem 'psych'
-end
