@@ -16,11 +16,11 @@ module Lifesaver
         private
 
         def notification_callbacks
-          after_save do
-            send :update_associations, :update
-          end
           before_destroy do
-            send :update_associations, :destroy
+            send :load_associations, :destroy
+          end
+          after_commit do
+            send :update_associations
           end
         end
       end
@@ -28,19 +28,23 @@ module Lifesaver
       def self.included(base)
         base.class_attribute :notifiable_associations
         base.notifiable_associations = NotifiableAssociations.new
+        base.delegate :notifiable_associations, to: :class
+        base.class_attribute :dependent_associations
+        base.dependent_associations = DependentAssociations.new(base)
+        base.delegate :dependent_associations, to: :class
         base.extend(ClassMethods)
       end
 
       def associations_to_notify
         models = []
-        self.class.notifiable_associations.on_notify.each do |association|
+        notifiable_associations.on_notify.each do |association|
           models |= models_for_association(association)
         end
         models
       end
 
       def needs_to_notify?
-        self.class.notifiable_associations.any_to_notify?
+        notifiable_associations.any_to_notify?
       end
 
       def models_for_association(assoc)
@@ -60,31 +64,26 @@ module Lifesaver
 
       private
 
-      def update_associations(operation)  models = []
-        to_skip = operation == :destroy ? dependent_associations : []
-        to_load = associations_to_load(:on_change, to_skip)
-
-        models = []
-        to_load.each { |key| models |= models_for_association(key) }
+      def update_associations
+        operation = destroyed? ? :destroy : :update
+        models = load_associations(operation)
         serialized_models = serialize_models(models)
         enqueue_worker(serialized_models)
+        @loaded_associations = nil
       end
 
-      def associations_to_load(key, skip_associations)
-        associations = self.class.notifiable_associations.public_send(key)
-        skip_associations_map = {}
-        skip_associations.each { |assoc| skip_associations_map[assoc] = true }
-        associations.reject { |assoc| skip_associations_map[assoc] }
+      def load_associations(operation)
+        return @loaded_associations unless @loaded_associations.nil?
+        @loaded_associations = []
+        to_skip = operation == :destroy ? dependent_associations.fetch : []
+        to_load = associations_to_load(:on_change, to_skip)
+        to_load.each { |key| @loaded_associations |= models_for_association(key) }
+        @loaded_associations
       end
 
-      def dependent_associations
-        dependent_associations = []
-        self.class.reflect_on_all_associations.each do |association|
-          if association.options[:dependent].present?
-            dependent_associations << association.name.to_sym
-          end
-        end
-        dependent_associations
+      def associations_to_load(key, associations_to_skip)
+        associations = notifiable_associations.public_send(key)
+        associations - associations_to_skip
       end
 
       def serialize_models(models)
