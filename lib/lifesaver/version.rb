@@ -1,3 +1,3 @@
 module Lifesaver
-  VERSION = '0.1.1.alpha'
+  VERSION = '0.2.0.alpha'
 end
