@@ -3,18 +3,8 @@ module Lifesaver
     module ModelAdditions
       module ClassMethods
         def enqueues_indexing
-          indexing_callbacks
-        end
-
-        private
-
-        def indexing_callbacks(options = {})
-          # after_commit?
-          after_save do
-            send :enqueue_indexing, options.merge(operation: :update)
-          end
-          after_destroy do
-            send :enqueue_indexing, options.merge(operation: :destroy)
+          after_commit do
+            send :enqueue_indexing
           end
         end
       end
@@ -41,8 +31,8 @@ module Lifesaver
 
       private
 
-      def enqueue_indexing(options)
-        operation = options[:operation]
+      def enqueue_indexing
+        operation = destroyed? ? :destroy : :update
         Lifesaver::Indexing::Enqueuer.new(model: self,
                                           operation: operation).enqueue
       end

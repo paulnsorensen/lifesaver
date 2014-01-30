@@ -1,8 +1,9 @@
 require 'pry'
+require 'database_cleaner'
 
-if RUBY_ENGINE != 'rbx'
+if ENV['RUN_COVERALLS'] && RUBY_ENGINE != 'rbx'
   require 'coveralls'
-  Coveralls.wear! if ENV['RUN_COVERALLS']
+  Coveralls.wear!
 end
 
 require 'lifesaver'
@@ -23,10 +24,9 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  config.around do |example|
-    ActiveRecord::Base.transaction do
-      example.run
-      fail ActiveRecord::Rollback
-    end
+  DatabaseCleaner.strategy = :truncation
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 end
