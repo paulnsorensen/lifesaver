@@ -8,7 +8,6 @@ module Lifesaver
       end
 
       def initialize_models(serialized_models)
-
         serialized_models.each do |model_hash|
           model = Lifesaver::SerializedModel.new
           model.class_name = model_hash['class_name']

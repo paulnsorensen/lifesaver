@@ -1,3 +1,9 @@
+## v0.2.0
+
+* Changed callbacks to use `after_commit`
+* Notification only occurs after model has been successfully deleted
+
+
 ## v0.1.0
 
 * Added config

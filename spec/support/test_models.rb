@@ -5,7 +5,6 @@ ActiveSupport.on_load :active_record do
   include Lifesaver::Notification::ModelAdditions
 end
 
-
 class Author < ActiveRecord::Base
   has_many :authorships, dependent: :destroy
   has_many :posts, through: :authorships

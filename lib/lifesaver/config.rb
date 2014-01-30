@@ -4,7 +4,6 @@ module Lifesaver
     attr_accessor :notification_queue, :indexing_queue
 
     def initialize(options = {})
-
       @notification_queue = :lifesaver_notification
       @indexing_queue = :lifesaver_indexing
 
