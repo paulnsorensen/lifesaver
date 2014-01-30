@@ -1,7 +1,6 @@
 module Lifesaver
   module Notification
     class DependentAssociations
-
       def initialize(klass)
         @class = klass
       end
@@ -21,7 +20,6 @@ module Lifesaver
         end
         dependent_associations
       end
-
     end
   end
 end

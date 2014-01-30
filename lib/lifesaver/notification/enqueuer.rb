@@ -18,7 +18,6 @@ module Lifesaver
       def should_enqueue?
         !serialized_models.empty? && !Lifesaver.indexing_suppressed?
       end
-
     end
   end
 end

@@ -97,7 +97,6 @@ module Lifesaver
       def enqueue_worker(serialized_models)
         Lifesaver::Notification::Enqueuer.new(serialized_models).enqueue
       end
-
     end
   end
 end

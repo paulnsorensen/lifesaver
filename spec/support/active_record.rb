@@ -18,7 +18,7 @@ module ActiveModel::Validations
     self.valid?
     [errors[attribute]].flatten.compact
   end
-  alias :error_on :errors_on
+  alias_method :error_on, :errors_on
 end
 
 # test models we'll use in each spec

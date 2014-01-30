@@ -44,5 +44,4 @@ module Lifesaver
   def configure
     yield config
   end
-
 end
