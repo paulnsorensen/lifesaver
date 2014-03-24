@@ -1,3 +1,7 @@
+## v0.2.1
+* Updated resque-loner library
+
+
 ## v0.2.0
 
 * Changed callbacks to use `after_commit`
