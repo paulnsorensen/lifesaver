@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'activerecord', '>= 3'
   spec.add_runtime_dependency 'tire', '~> 0.6.0'
   spec.add_runtime_dependency 'resque', '~> 1.25.0'
-  spec.add_runtime_dependency 'resque-loner', '~> 1.2.1'
+  spec.add_runtime_dependency 'resque-loner', '~> 1.3.0'
 
   if RUBY_ENGINE == 'rbx'
     spec.add_development_dependency 'racc'
