@@ -1,6 +1,6 @@
 machine:
   services:
-    - redis-server
+    - redis
     - elasticsearch
   ruby:
     version:
