@@ -9,11 +9,11 @@ describe Lifesaver do
     Author.create(name: 'Theo Epstein', affiliate_id: affiliate.id)
   end
   let(:post) do
-  Post.create(
-              title: 'Lifesavers are my favorite candy',
-              content: 'Lorem ipsum',
-              tags: %w(candy stuff opinions)
-             )
+    Post.create(
+                title: 'Lifesavers are my favorite candy',
+                content: 'Lorem ipsum',
+                tags: %w(candy stuff opinions)
+               )
   end
   let(:comment) do
     Comment.create(
@@ -44,7 +44,7 @@ describe Lifesaver do
 
   it 'should reindex on destroy' do
     author.destroy
-    sleep(1.seconds)
+    author.index.refresh
 
     expect(Author.search(query: 'Theo Epstein').count).to eql(0)
   end
@@ -52,7 +52,7 @@ describe Lifesaver do
   it 'should reindex on update' do
     author.name = 'Harry Carry'
     author.save!
-    sleep(1.seconds)
+    author.index.refresh
 
     expect(Author.search(query: 'Harry Carry').count).to eql(1)
   end
@@ -60,7 +60,7 @@ describe Lifesaver do
   it 'should update distant related indexes' do
     post.tags << 'werd'
     post.save!
-    sleep(1.seconds)
+    author.index.refresh
 
     expect(Author.search(query: 'werd').count).to eql(1)
   end
@@ -68,7 +68,7 @@ describe Lifesaver do
   it "should update related indexes if saved model doesn't have index" do
     comment.text = 'We hate this!'
     comment.save!
-    sleep(1.seconds)
+    post.index.refresh
 
     result = Post.search(query: 'Lifesavers').to_a.first
     comment_text = result.comments.first.text

@@ -54,13 +54,13 @@ describe Lifesaver::Notification::TraversalQueue do
 
   describe '#empty?' do
     it 'is true when empty' do
-      expect(traversal_queue.empty?).to be_true
+      expect(traversal_queue.empty?).to be_truthy
     end
 
     it 'is not true when not empty' do
       traversal_queue << model
 
-      expect(traversal_queue.empty?).to be_false
+      expect(traversal_queue.empty?).to be_falsey
     end
   end
 
