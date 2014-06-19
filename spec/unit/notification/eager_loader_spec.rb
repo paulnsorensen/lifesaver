@@ -52,13 +52,13 @@ describe Lifesaver::Notification::EagerLoader do
 
   describe '#empty?' do
     it 'is true when empty' do
-      expect(eager_loader.empty?).to be_true
+      expect(eager_loader.empty?).to be_truthy
     end
 
     it 'is false when not empty' do
       eager_loader.add_model('Post', 38)
 
-      expect(eager_loader.empty?).to be_false
+      expect(eager_loader.empty?).to be_falsey
     end
   end
 end
