@@ -1,7 +1,9 @@
 class Lifesaver::VisitorWorker
   include Resque::Plugins::UniqueJob
 
-  def self.queue; Lifesaver.config.notification_queue end
+  def self.queue
+    Lifesaver.config.notification_queue
+  end
 
   def self.perform(models)
     indexing_graph = Lifesaver::Notification::IndexingGraph.new

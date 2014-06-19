@@ -1,7 +1,9 @@
 class Lifesaver::IndexWorker
   include ::Resque::Plugins::UniqueJob
 
-  def self.queue; Lifesaver.config.indexing_queue end
+  def self.queue
+    Lifesaver.config.indexing_queue
+  end
 
   def self.perform(class_name, model_id, operation)
     Lifesaver::Indexing::Indexer.new(
