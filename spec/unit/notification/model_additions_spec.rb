@@ -33,7 +33,7 @@ describe Lifesaver::Notification::ModelAdditions do
     it 'returns the correct eager-loaded models' do
       model = Authorship.load_with_notifiable_associations(authorship.id).first
 
-      expect(model.association(:author).loaded?).to be_true
+      expect(model.association(:author).loaded?).to be_truthy
     end
   end
 
@@ -45,11 +45,11 @@ describe Lifesaver::Notification::ModelAdditions do
 
   describe '#needs_to_notify?' do
     it 'is false if there are no notifiable associations' do
-      expect(post.needs_to_notify?).to be_false
+      expect(post.needs_to_notify?).to be_falsey
     end
 
     it 'is true if there are notifiable associations' do
-      expect(author.needs_to_notify?).to be_true
+      expect(author.needs_to_notify?).to be_truthy
     end
   end
 
